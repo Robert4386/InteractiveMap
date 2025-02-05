@@ -1,0 +1,63 @@
+#map {
+    height: 100vh;
+    width: 100%;
+}
+
+.popup {
+    position: absolute;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+}
+
+.popup input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.popup button {
+    width: 100%;
+}
+
+.context-menu {
+    position: absolute;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+}
+
+.context-menu button {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+const vectorSource = new ol.source.Vector();
+
+// Создание слоя с пользовательским стилем для маркеров
+const markerLayer = new ol.layer.Vector({
+    source: vectorSource,
+    style: function (feature) {
+        // Проверяем, есть ли у маркера свойство 'link' (для сохраненных маркеров)
+        const linkExists = feature.get('link') !== undefined;
+
+        return new ol.style.Style({
+            image: new ol.style.Icon({
+                src: 'path/to/your/icon.png', // Укажите путь к вашей иконке
+                anchor: [0.5, 1], // Центр иконки по нижней точке
+                scale: 0.7, // Размер иконки (по необходимости)
+                opacity: linkExists ? 1 : 0.7, // Можно изменять прозрачность для разных состояний
+            }),
+        });
+    },
+});
+
+map.addLayer(markerLayer);
